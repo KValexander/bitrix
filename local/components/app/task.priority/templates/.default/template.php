@@ -54,7 +54,6 @@
 				tasks: <?= json_encode($arResult["tasks"]); ?>,
 				history: <?= json_encode($arResult["history"]); ?>,
 				userId: <?= json_encode($arResult["userId"]); ?>,
-				userName: <?= json_encode($arResult["userName"]); ?>,
 			}
 		},
 
@@ -107,7 +106,7 @@
 								
 								for(r in res) {
 									res[r]["TITLE"] = self.tasks.find(t => t["ID"] == res[r]["UF_TASK_ID"])["TITLE"];
-									res[r]["NAME"] = self.userName;
+									res[r]["NAME"] = self.tasks.find(t => t["RESPONSIBLE_ID"] == res[r]["UF_USER_ID"])["RESPONSIBLE_NAME"];
 								}
 
 								self.history = res;

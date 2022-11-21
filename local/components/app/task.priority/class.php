@@ -71,7 +71,6 @@ class Task extends CBitrixComponent
 		$this->arResult["tasks"] = $this->getTasks();
 		$this->arResult["history"] = $this->getTaskPriorityHistory();
 		$this->arResult["userId"] = $USER->GetID();
-		$this->arResult["userName"] = $USER->GetFirstName();
 
 		$this->arResult["ERRORS"] = array_merge($this->errors, $this->arResult["ERRORS"]);
 
