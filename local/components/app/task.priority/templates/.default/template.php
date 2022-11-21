@@ -106,7 +106,7 @@
 								res = JSON.parse(res);
 								
 								for(r in res) {
-									res[r]["TITLE"] = self.tasks.find(t => t["ID"] == taskId)["TITLE"];
+									res[r]["TITLE"] = self.tasks.find(t => t["ID"] == res[r]["UF_TASK_ID"])["TITLE"];
 									res[r]["NAME"] = self.userName;
 								}
 
