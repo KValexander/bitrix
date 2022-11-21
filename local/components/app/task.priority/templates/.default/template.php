@@ -7,8 +7,8 @@
 	<div class="row row-start">
 		<div class="col" v-for="value in tasks" :key='value["UF_PRIORITY"]'>
 			<h3>{{ value["TITLE"] }}</h3>
-			<p class="row">Ответственный: <b>{{ value["RESPONSIBLE_NAME"] }} {{ value["RESPONSIBLE_LAST_NAME"] }} {{ value["RESPONSIBLE_SECOND_NAME"] }}</b></p>
-			<p class="row">Постановщик: <b>{{ value["CREATED_BY_NAME"] }} {{ value["CREATED_BY_LAST_NAME"] }} {{ value["CREATED_BY_SECOND_NAME"] }}</b></p>
+			<p class="row">Ответственный: <b>{{ value["RESPONSIBLE_NAME"] }}</b></p>
+			<p class="row">Постановщик: <b>{{ value["CREATED_BY_NAME"] }}</b></p>
 			<p class="row">Дата постановки:
 				<p v-if='value["START_DATE_PLAN"]'><b>{{ value["START_DATE_PLAN"] }} - {{ value["END_DATE_PLAN"] }}</b></p>
 				<b v-else>Без срока</b>
@@ -53,7 +53,8 @@
 			return {
 				tasks: <?= json_encode($arResult["tasks"]); ?>,
 				history: <?= json_encode($arResult["history"]); ?>,
-				user_id: <?= json_encode($arResult["user_id"]); ?>
+				userId: <?= json_encode($arResult["userId"]); ?>,
+				userName: <?= json_encode($arResult["userName"]); ?>,
 			}
 		},
 
@@ -88,21 +89,28 @@
 				);
 			},
 
-			async UploadTaskPriorityHistory(id, old, n) {
+			async UploadTaskPriorityHistory(taskId, old, n) {
 				let self = this;
 				await BX.ajax.post(
 					"/task.priority.history.add",
 					{
-						"ID": id,
+						"TASK_ID": taskId,
+						"USER_ID": self.userId,
 						"OLD": old,
 						"NEW": n,
-						"USER_ID": self.user_id,
 					},
 					function(result) {
 						BX.ajax.get(
 							"/task.priority.history.get",
 							function(res) {
-								self.history = JSON.parse(res);
+								res = JSON.parse(res);
+								
+								for(r in res) {
+									res[r]["TITLE"] = self.tasks.find(t => t["ID"] == taskId)["TITLE"];
+									res[r]["NAME"] = self.userName;
+								}
+
+								self.history = res;
 							}
 						);
 					}

@@ -26,11 +26,12 @@
 		
 		data() {
 			return {
-				leads: <?= json_encode($arResult); ?>
+				leads: <?= json_encode($arResult["leads"]); ?>
 			}
 		},
 
 		methods: {
+
 			UpdateCheck(e, id) {
 				if(!confirm("Подтвердить?")) return;
 
@@ -58,6 +59,7 @@
 				);
 
 			}
+
 		}
 
 	}).mount("#application");
