@@ -1,20 +1,5 @@
 <?php
 return array (
-  
-  /* Routing
-     include: /local/routes/web.php
-              /local/routes/api.php
-  */
-  'routing' => [
-    'value' => [
-      'config' => [
-        'web.php',
-        'api.php'
-      ]
-    ]
-  ],
-  
-
   'utf_mode' =>
   array (
     'value' => true,
