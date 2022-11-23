@@ -59,26 +59,14 @@
 
 		methods: {
 
-			/* :key почему-то не работает */
-			// async UpdateTaskPriority(v, id, bool) {
-			// 	const self = this;
-			// 	BX.rest.callMethod(
-			// 		"task.item.update",
-			// 		[id, {"UF_PRIORITY": (bool) ? ++v : --v}],
-			// 		function(result) {
-			// 			self.tasks.sort((a, b) => b["UF_PRIORITY"] - a["UF_PRIORITY"]);
-			// 		}
-			// 	);
-			// }
-
 			UpdateTaskPriority(e, id, bool) {
 				let self = this, priority, p;
 				priority = e.target.parentNode.querySelector("#priority");
 				p = priority.innerHTML;
-
-				BX.rest.callMethod(
-					"task.item.update", // tasks.task.update не изменяет пользовательские поля
-					[id, {"UF_PRIORITY": (bool) ? ++p : --p}],
+				
+				BX.ajax.get(
+					"/app/task?action=updateTask",
+					{ "ID": id, "UF_PRIORITY": (bool) ? ++p : --p },
 					function(result) {
 						self.UploadTaskPriorityHistory(id, priority.innerHTML, p);
 						priority.innerHTML = p;
@@ -88,10 +76,10 @@
 				);
 			},
 
-			async UploadTaskPriorityHistory(taskId, old, n) {
+			UploadTaskPriorityHistory(taskId, old, n) {
 				let self = this;
-				await BX.ajax.post(
-					"/task.priority.history.add",
+				BX.ajax.get(
+					"/app/task?action=addTaskPriorityHistory",
 					{
 						"TASK_ID": taskId,
 						"USER_ID": self.userId,
@@ -100,16 +88,9 @@
 					},
 					function(result) {
 						BX.ajax.get(
-							"/task.priority.history.get",
+							"/app/task?action=getTaskPriorityHistory",
 							function(res) {
-								res = JSON.parse(res);
-								
-								for(r in res) {
-									res[r]["TITLE"] = self.tasks.find(t => t["ID"] == res[r]["UF_TASK_ID"])["TITLE"];
-									res[r]["NAME"] = self.tasks.find(t => t["RESPONSIBLE_ID"] == res[r]["UF_USER_ID"])["RESPONSIBLE_NAME"];
-								}
-
-								self.history = res;
+								self.history = JSON.parse(res);
 							}
 						);
 					}

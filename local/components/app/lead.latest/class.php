@@ -4,7 +4,12 @@
 class Lead extends CBitrixComponent
 {
 	private $templatePage = "";
+	private $action = "";
 	private $errors = [];
+
+	/* Api */
+	private $response = "";
+	private $code = 0;
 
 	/* Get leads */
 	private function getLeads()
@@ -36,16 +41,54 @@ class Lead extends CBitrixComponent
 		}
 
 		/* Return */
+		$this->code = 200; // for api
 		return $leads;
+	}
+
+	/* Update lead */
+	private function updateLead()
+	{
+		/* Update lead */
+		$result = \Bitrix\Crm\LeadTable::update($_REQUEST["ID"],[
+			"UF_CHECK" => $_REQUEST["UF_CHECK"]
+		])->isSuccess();
+
+		/* Return */
+		$this->code = ($result) ? 200 : 400; // for api, idk right code
+		return $result;
 	}
 
 	/* Execute component */
 	public function executeComponent()
 	{
+		$this->arResult = [];
+		$this->action = (isset($_REQUEST["action"])) ? $_REQUEST["action"] : $this->arParams["action"];
+
+		(!$_SERVER['HTTP_BX_AJAX']) ? $this->browser() : $this->api();
+	}
+
+	/* Api */
+	private function api()
+	{
+		$this->response = "Method not found";
+		$this->code = 404;
+
+		$method = $this->action;
+		if(method_exists($this, $method)) {
+			$this->response = $this->$method();
+		}
+
+		Header("Content-Type: application/json;charset=utf-8");
+		Header("HTTP/1.1 ". $this->code);
+		echo json_encode($this->response);
+	}
+
+	/* Browser */
+	private function browser()
+	{
 		$this->arResult["leads"] = $this->getLeads();
-
+		$this->arResult["action"] = $this->action;
 		$this->arResult["ERRORS"] = array_merge($this->errors, $this->arResult["ERRORS"]);
-
 		$this->IncludeComponentTemplate($this->templatePage);
 	}
 

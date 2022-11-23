@@ -1,8 +1,12 @@
 <?
-	require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+	$include = include_once($_SERVER["DOCUMENT_ROOT"] . "/local/include.php");
+	require($_SERVER["DOCUMENT_ROOT"] . $include["header"]);
 
-	$APPLICATION->SetTitle("Задачи по приоритету");
-	$APPLICATION->SetAdditionalCSS("/local/style/style.css");
+	if($include["browser"]) {
+		$APPLICATION->SetTitle("Задачи по приоритету");
+		$APPLICATION->SetAdditionalCSS("/local/style/style.css");
+	}
+
 	$APPLICATION->IncludeComponent("app:task.priority", ".default", Array(), false);
 
-	require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
+	require($_SERVER["DOCUMENT_ROOT"] . $include["footer"]);

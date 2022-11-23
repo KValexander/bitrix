@@ -22,46 +22,65 @@
 
 <script type="text/javascript">
 
+	/* Vue create app */
 	BX.Vue3.BitrixVue.createApp({
 		
+		/* Return data */
 		data() {
 			return {
 				leads: <?= json_encode($arResult["leads"]); ?>
 			}
 		},
 
+		/* Methods */
 		methods: {
 
+			/* Update check */
 			UpdateCheck(e, id) {
 				if(!confirm("Подтвердить?")) return;
+				let check = (e.target.checked) ? 1 : 0;
 
-				let data = (e.target.checked) ? 1 : 0;
-
-				BX.rest.callMethod(
-					"crm.lead.update",
-					{
-						id: id,
-						fields:
-						{
-							"UF_CHECK": data
-						}
-					},
+				/* Ajax */
+				/* Я не могу получить данные со стороны сервера использу post запрос */
+				BX.ajax.get(
+					`/app/lead?action=updateLead`,
+					{ "ID": id, "UF_CHECK": check },
 					function(result) {
-						if(result.error()) {
-							alert("Произошла ошибка: " + result.error());
-						}
-
-						else {
-							e.target.checked = data;
-							alert((data) ? "Проверено" : "Проверка убрана");
-						}
+						e.target.checked = check;
+						alert((check) ? "Проверено" : "Проверка убрана");
 					}
 				);
+
+				// BX.ajax.post(
+				// 	"/app/lead?action=updateLead", // URL
+				// 	JSON.stringify({ "ID": id, "UF_CHECK": check }), // BODY
+				// 	function(result) { // RESULT
+				// 		console.log(result);
+				// 		e.target.checked = check;
+				// 		alert((check) ? "Проверено" : "Проверка убрана");
+				// 	}
+				// );
+
+				// BX.ajax({
+				// 	url: "/app/lead?action=updateLead",
+				// 	method: "POST",
+				// 	data: { "ID": id, "UF_CHECK": check },
+				// 	cache: false,
+				// 	onsuccess: function(data) {
+				// 		console.log(data);
+				// 		e.target.checked = data;
+				// 		alert((data) ? "Проверено" : "Проверка убрана");
+				// 	},
+				// 	onfailure: function(err) {
+				// 		console.log(err);
+				// 	}
+				// });
 
 			}
 
 		}
 
+	/* Mount */
 	}).mount("#application");
 
 </script>
