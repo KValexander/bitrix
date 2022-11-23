@@ -53,7 +53,7 @@
 
 				// BX.ajax.post(
 				// 	"/app/lead?action=updateLead", // URL
-				// 	JSON.stringify({ "ID": id, "UF_CHECK": check }), // BODY
+				// 	{ "ID": id, "UF_CHECK": check }, // BODY
 				// 	function(result) { // RESULT
 				// 		console.log(result);
 				// 		e.target.checked = check;
