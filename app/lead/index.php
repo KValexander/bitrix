@@ -8,6 +8,6 @@
 		$APPLICATION->SetAdditionalCSS("/local/style/style.css");
 	}
 
-	$APPLICATION->IncludeComponent("app:lead.latest", ".default", Array(), false);
+	$APPLICATION->IncludeComponent("app:lead.latest", ".default", []);
 
 	require($_SERVER["DOCUMENT_ROOT"] . $include["footer"]);
