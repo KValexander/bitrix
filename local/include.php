@@ -2,6 +2,9 @@
 	$include = [];
 
 	$include["browser"] = (!$_SERVER['HTTP_BX_AJAX']);
+	if($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") {
+		$include["broswer"] = false;
+	}
 
 	if(!$include["browser"]) {
 		define('STOP_STATISTICS',    true);

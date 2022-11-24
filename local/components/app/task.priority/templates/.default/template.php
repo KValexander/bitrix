@@ -64,8 +64,8 @@
 				priority = e.target.parentNode.querySelector("#priority");
 				p = priority.innerHTML;
 				
-				BX.ajax.get(
-					"/app/task?action=updateTask",
+				BX.ajax.post(
+					"/app/task/?action=updateTask",
 					{ "ID": id, "UF_PRIORITY": (bool) ? ++p : --p },
 					function(result) {
 						self.UploadTaskPriorityHistory(id, priority.innerHTML, p);
@@ -78,8 +78,8 @@
 
 			UploadTaskPriorityHistory(taskId, old, n) {
 				let self = this;
-				BX.ajax.get(
-					"/app/task?action=addTaskPriorityHistory",
+				BX.ajax.post(
+					"/app/task/?action=addTaskPriorityHistory",
 					{
 						"TASK_ID": taskId,
 						"USER_ID": self.userId,

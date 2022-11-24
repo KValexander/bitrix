@@ -5,6 +5,7 @@
 	echo "<pre>";
 	var_dump($_REQUEST);
 	var_dump($_SERVER);
+	var_dump(file_get_contents('php://input'));
 	echo "</pre>";
 ?>
 
@@ -15,16 +16,16 @@
 	// BxAjaxGet();
 	// BxAjaxPost();
 	// FetchGet();
-	FetchPost();
+	// FetchPost();
 
 	async function FetchGet() {
-		let result = await fetch("/app/lead?action=test&method=GET&name=Fetch GET test", {
+		let result = await fetch("/app/lead/?action=test&method=GET&name=Fetch GET test", {
 			headers: {
 				"Bx-Ajax": true,
 				"X-Requested-With": "XMLHttpRequest",
 			}
 		});
-		result = await result.json();
+		result = await result.text();
 		console.log(result);
 	}
 
@@ -40,21 +41,22 @@
 
 		let JSONstringify = JSON.stringify(object);
 
-		let result = await fetch("/app/lead?action=test", {
+		let result = await fetch("/app/lead/?action=test", {
 			method: "POST",
 			headers: {
 				"Bx-Ajax": true,
 				"X-Requested-With": "XMLHttpRequest",
 				// "Content-Type": "application/x-www-form-urlencoded",
 				// "Content-Type": "multipart/form-data",
-				"Content-Type": "application/json",
+				// "Content-Type": "application/json",
 			},
-			// body: formData,
+			body: formData,
 			// body: object,
-			body: JSONstringify,
+			// body: JSONstringify,
 
 		});
-		result = await result.json();
+		// result = await result.json();
+		result = await result.text();
 		console.log(result);
 	}
 
@@ -75,7 +77,7 @@
 
 	function BxAjaxPost() {
 		BX.ajax({
-			url: "/app/lead?action=test",
+			url: "/app/lead/?action=test",
 			method: "POST",
 			data: { "method": "POST", "name": "BX Ajax POST test" },
 			processData: true,
@@ -92,7 +94,7 @@
 	
 	function BxGet() {
 		BX.ajax.get(
-			`/app/lead?action=test`,
+			`/app/lead/?action=test`,
 			{"method": "GET", "name": "BX GET test"},
 			function(result) {
 				console.log(JSON.parse(result));
@@ -102,7 +104,7 @@
 	
 	function BxPost() {
 		BX.ajax.post(
-			`/app/lead?action=test`,
+			`/app/lead/?action=test`,
 			{"method": "POST", "name": "BX POST test"},
 			function(result) {
 				console.log(JSON.parse(result));

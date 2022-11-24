@@ -1,4 +1,4 @@
-<?php \Bitrix\Main\UI\Extension::load("ui.vue3") ?>
+<?php \Bitrix\Main\UI\Extension::load("ui.vue3"); ?>
 
 <div id="application" class="row row-start">
 
@@ -36,45 +36,19 @@
 		methods: {
 
 			/* Update check */
-			UpdateCheck(e, id) {
+			async UpdateCheck(e, id) {
 				if(!confirm("Подтвердить?")) return;
 				let check = (e.target.checked) ? 1 : 0;
 
 				/* Ajax */
-				/* Я не могу получить данные со стороны сервера использу post запрос */
-				BX.ajax.get(
-					`/app/lead?action=updateLead`,
+				BX.ajax.post(
+					`/app/lead/?action=updateLead`,
 					{ "ID": id, "UF_CHECK": check },
 					function(result) {
 						e.target.checked = check;
 						alert((check) ? "Проверено" : "Проверка убрана");
 					}
 				);
-
-				// BX.ajax.post(
-				// 	"/app/lead?action=updateLead", // URL
-				// 	{ "ID": id, "UF_CHECK": check }, // BODY
-				// 	function(result) { // RESULT
-				// 		console.log(result);
-				// 		e.target.checked = check;
-				// 		alert((check) ? "Проверено" : "Проверка убрана");
-				// 	}
-				// );
-
-				// BX.ajax({
-				// 	url: "/app/lead?action=updateLead",
-				// 	method: "POST",
-				// 	data: { "ID": id, "UF_CHECK": check },
-				// 	cache: false,
-				// 	onsuccess: function(data) {
-				// 		console.log(data);
-				// 		e.target.checked = data;
-				// 		alert((data) ? "Проверено" : "Проверка убрана");
-				// 	},
-				// 	onfailure: function(err) {
-				// 		console.log(err);
-				// 	}
-				// });
 
 			}
 
