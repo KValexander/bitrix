@@ -10,11 +10,11 @@
 
 <script type="text/javascript">
 
-	BxGet();
-	BxPost();
-	BxAjaxGet();
-	BxAjaxPost();
-	FetchGet();
+	// BxGet();
+	// BxPost();
+	// BxAjaxGet();
+	// BxAjaxPost();
+	// FetchGet();
 	FetchPost();
 
 	async function FetchGet() {
@@ -45,13 +45,13 @@
 			headers: {
 				"Bx-Ajax": true,
 				"X-Requested-With": "XMLHttpRequest",
-				"Content-Type": "application/x-www-form-urlencoded",
+				// "Content-Type": "application/x-www-form-urlencoded",
 				// "Content-Type": "multipart/form-data",
-				// "Content-Type": "application/json",
+				"Content-Type": "application/json",
 			},
-			body: formData,
+			// body: formData,
 			// body: object,
-			// body: JSONstringify,
+			body: JSONstringify,
 
 		});
 		result = await result.json();

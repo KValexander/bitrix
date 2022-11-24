@@ -139,6 +139,7 @@ class Task extends CBitrixComponent
 			"REQUEST" => $_REQUEST,
 			"PARAMS" => $this->arParams,
 			"SERVER" => $_SERVER,
+			"JSON" => json_decode(file_get_contents('php://input'), true),
 		];
 	}
 
