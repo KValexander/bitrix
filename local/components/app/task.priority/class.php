@@ -129,6 +129,19 @@ class Task extends CBitrixComponent
 		echo json_encode($this->response);
 	}
 
+	/* Test */
+	private function test()
+	{
+		$this->code = 200;
+		return [
+			"GET" => $_GET,
+			"POST" => $_POST,
+			"REQUEST" => $_REQUEST,
+			"PARAMS" => $this->arParams,
+			"SERVER" => $_SERVER,
+		];
+	}
+
 	/* Browser */
 	private function browser()
 	{
